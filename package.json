@@ -8,12 +8,15 @@
 		"start": "next start"
 	},
 	"dependencies": {
-		"@material-ui/core": "^4.11.0",
-		"@material-ui/icons": "^4.9.1",
+		"@chakra-ui/core": "^1.0.0-rc.8",
 		"axios": "^0.20.0",
+		"framer-motion": "^2.9.4",
 		"next": "9.5.5",
+		"nprogress": "^0.2.0",
 		"react": "16.14.0",
 		"react-dom": "16.14.0",
+		"react-hook-form": "^6.9.6",
+		"react-icons": "^3.11.0",
 		"sqlite": "^4.0.15",
 		"sqlite3": "^5.0.0",
 		"swr": "^0.3.6"
