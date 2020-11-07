@@ -1,51 +1,30 @@
-import {
-	AppBar,
-	Button,
-	makeStyles,
-	Toolbar,
-	Typography,
-} from '@material-ui/core';
-import Link from 'next/link';
+import { Flex, Icon, Link } from '@chakra-ui/core';
+import NextLink from 'next/link';
 import React from 'react';
-
-const useStyles = makeStyles((theme) => ({
-	root: {
-		flexGrow: 1,
-	},
-	menuButton: {
-		marginRight: theme.spacing(2),
-	},
-	title: {
-		flexGrow: 1,
-	},
-}));
+import { FaCarSide } from 'react-icons/fa';
 
 export function Nav() {
-	const classes = useStyles();
-
 	return (
-		<AppBar position="static">
-			<Toolbar variant="dense">
-				<Typography variant="h6" className={classes.title}>
-					Car Trader
-				</Typography>
-
-				<Button color="inherit">
-					<Link href="/">
-						<a style={{ color: 'white' }}>
-							<Typography color="inherit">Home</Typography>
-						</a>
-					</Link>
-				</Button>
-
-				<Button color="inherit">
-					<Link href="/faq">
-						<a style={{ color: 'white' }}>
-							<Typography color="inherit">FAQ</Typography>
-						</a>
-					</Link>
-				</Button>
-			</Toolbar>
-		</AppBar>
+		<Flex
+			alignItems="center"
+			justifyContent="space-between"
+			pt={4}
+			pb={4}
+			maxW="1250px"
+			margin="0 auto"
+			w="full"
+			px={8}
+			h="70px"
+		>
+			<Flex>
+				<Icon as={FaCarSide} boxSize={6} mr={8} />
+				<NextLink href="/">
+					<Link mr={4}>Home</Link>
+				</NextLink>
+				<NextLink href="/faq">
+					<Link>FAQs</Link>
+				</NextLink>
+			</Flex>
+		</Flex>
 	);
 }

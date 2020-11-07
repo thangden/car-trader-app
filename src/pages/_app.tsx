@@ -1,66 +1,58 @@
-import { Box, Container, CssBaseline } from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import axios from 'axios';
-import App from 'next/app';
-import Head from 'next/head';
-import React from 'react';
 import { SWRConfig } from 'swr';
 import { Nav } from '../components/Nav';
 
 axios.defaults.baseURL = 'http://localhost:4001';
 
-// Create a theme instance.
-export const theme = createMuiTheme({
-	palette: {
-		primary: {
-			main: '#355876',
-		},
-		error: {
-			main: red.A700,
-		},
-		background: {
-			default: '#fff',
-		},
-	},
+import theme from '../theme';
+// import App from "next/app";
+import type { AppProps /*, AppContext */ } from 'next/app';
+import { Box, ChakraProvider, Flex } from '@chakra-ui/core';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
+import { Router } from 'next/dist/client/router';
+
+NProgress.configure({ showSpinner: false });
+
+Router.events.on('routeChangeStart', () => {
+	NProgress.start();
+});
+Router.events.on('routeChangeComplete', () => {
+	NProgress.done();
+});
+Router.events.on('routeChangeError', () => {
+	NProgress.done();
 });
 
-export default class MyApp extends App {
-	componentDidMount() {
-		// Remove the server-side injected CSS.
-		const jssStyles = document.querySelector('#jss-server-side');
-		if (jssStyles) {
-			jssStyles.parentElement!.removeChild(jssStyles);
-		}
-	}
-
-	render() {
-		const { Component, pageProps } = this.props;
-
-		return (
-			<React.Fragment>
-				<Head>
-					<title>My page</title>
-					<meta
-						name="viewport"
-						content="minimum-scale=1, initial-scale=1, width=device-width"
-					/>
-				</Head>
-				<ThemeProvider theme={theme}>
-					{/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-					<CssBaseline />
-					<Nav />
-					<SWRConfig
-						value={{ fetcher: (url: string) => axios(url).then((r) => r.data) }}
-					>
-						<Container maxWidth={false}>
-							<Box marginTop={2}>
-								<Component {...pageProps} />
-							</Box>
-						</Container>
-					</SWRConfig>
-				</ThemeProvider>
-			</React.Fragment>
-		);
-	}
+function MyApp({ Component, pageProps }: AppProps) {
+	return (
+		<ChakraProvider resetCSS theme={theme}>
+			<SWRConfig
+				value={{ fetcher: (url: string) => axios(url).then((r) => r.data) }}
+			>
+				<Box backgroundColor="gray.100" minH="100vh">
+					<Flex backgroundColor="white" w="full">
+						<Nav />
+					</Flex>
+					<Flex my={16} mx="auto" direction="column" maxW="1250px" px={8}>
+						<Component {...pageProps} />
+					</Flex>
+				</Box>
+			</SWRConfig>
+		</ChakraProvider>
+	);
 }
+
+// Only uncomment this method if you have blocking data requirements for
+// every single page in your application. This disables the ability to
+// perform automatic static optimization, causing every page in your app to
+// be server-side rendered.
+//
+// MyApp.getInitialProps = async (appContext: AppContext) => {
+//   // calls page's `getInitialProps` and fills `appProps.pageProps`
+//   const appProps = await App.getInitialProps(appContext);
+
+//   return { ...appProps }
+// }
+
+export default MyApp;
