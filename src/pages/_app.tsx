@@ -1,9 +1,3 @@
-import axios from 'axios';
-import { SWRConfig } from 'swr';
-import { Nav } from '../components/Nav';
-
-axios.defaults.baseURL = 'http://localhost:4001';
-
 import theme from '../theme';
 // import App from "next/app";
 import type { AppProps /*, AppContext */ } from 'next/app';
@@ -11,6 +5,11 @@ import { Box, ChakraProvider, Flex } from '@chakra-ui/core';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { Router } from 'next/dist/client/router';
+import axios from 'axios';
+import { SWRConfig } from 'swr';
+import { Nav } from '../components/Nav';
+
+// axios.defaults.baseURL = 'http://localhost:3000';
 
 NProgress.configure({ showSpinner: false });
 
