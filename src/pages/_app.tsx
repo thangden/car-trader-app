@@ -1,9 +1,3 @@
-import axios from 'axios';
-import { SWRConfig } from 'swr';
-import { Nav } from '../components/Nav';
-
-axios.defaults.baseURL = 'http://localhost:4001';
-
 import theme from '../theme';
 // import App from "next/app";
 import type { AppProps /*, AppContext */ } from 'next/app';
@@ -11,6 +5,9 @@ import { Box, ChakraProvider, Flex } from '@chakra-ui/core';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { Router } from 'next/dist/client/router';
+import { SWRConfig } from 'swr';
+import API from '../../api';
+import { Nav } from '../components/Nav';
 
 NProgress.configure({ showSpinner: false });
 
@@ -28,13 +25,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<ChakraProvider resetCSS theme={theme}>
 			<SWRConfig
-				value={{ fetcher: (url: string) => axios(url).then((r) => r.data) }}
+				value={{ fetcher: (url: string) => API(url).then((r) => r.data) }}
 			>
 				<Box backgroundColor="gray.100" minH="100vh">
 					<Flex backgroundColor="white" w="full">
 						<Nav />
 					</Flex>
-					<Flex my={16} mx="auto" direction="column" maxW="1250px" px={8}>
+					<Flex mx="auto" direction="column" maxW="1250px" px={8} py={16}>
 						<Component {...pageProps} />
 					</Flex>
 				</Box>
