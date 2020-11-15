@@ -21,7 +21,7 @@ export function Nav() {
 				<NextLink href="/">
 					<Link mr={4}>Home</Link>
 				</NextLink>
-				<NextLink href="/faq">
+				<NextLink href="/faqs">
 					<Link>FAQs</Link>
 				</NextLink>
 			</Flex>

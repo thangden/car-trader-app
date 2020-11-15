@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getModels } from '../../database/getModels';
-import getAsString from '../../getAsString';
+import { getAsString } from '../../common';
 
 export default async function models(
 	req: NextApiRequest,
