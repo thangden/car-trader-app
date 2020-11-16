@@ -71,6 +71,16 @@ export default function Search({ makes, models, singleColumns }: SearchProps) {
 		console.log(data);
 	};
 
+	const handleReset = () => {
+		reset({
+			make: 'all',
+			model: 'all',
+			minPrice: 'all',
+			maxPrice: 'all',
+		});
+		onSubmit(getValues());
+	};
+
 	return (
 		<>
 			<Head>
@@ -163,7 +173,8 @@ export default function Search({ makes, models, singleColumns }: SearchProps) {
 							leftIcon={<RepeatIcon />}
 							colorScheme="teal"
 							variant="link"
-							onClick={() => reset()}
+							onClick={handleReset}
+							isDisabled={Object.keys(query).length === 0}
 						>
 							Reset
 						</Button>
