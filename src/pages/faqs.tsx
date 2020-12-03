@@ -1,19 +1,37 @@
 import { GetStaticProps } from 'next';
-import API, { FaqModel } from '../../api';
 import { openDB } from '../openDB';
-import { Box, Heading, Stack, Text } from '@chakra-ui/core';
+import { Box, Heading, Link, Stack, Text } from '@chakra-ui/core';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { FaqModel } from '../interfaces/Faq';
 
 interface FaqsProps {
 	faqs: FaqModel[];
 	error: string;
 }
 
-function Feature({ title, desc, ...rest }) {
+function Feature({
+	title,
+	desc,
+	children,
+	...rest
+}: {
+	title: string;
+	desc?: string;
+	children?: React.ReactNode;
+}) {
 	return (
-		<Box p={5} shadow="md" borderWidth="1px" {...rest} bg="white">
+		<Box
+			borderWidth="1px"
+			borderRadius="lg"
+			overflow="hidden"
+			p={4}
+			bg="white"
+			{...rest}
+		>
 			<Heading fontSize="xl">{title}</Heading>
-			<Text mt={4} whiteSpace="pre-line">
+			<Text mt={3} whiteSpace="pre-line">
 				{desc}
+				{children}
 			</Text>
 		</Box>
 	);
@@ -28,6 +46,26 @@ export default function Faqs({ faqs, error }: FaqsProps) {
 			{faqs.map((f) => (
 				<Feature key={f.id} title={f.question} desc={f.answer} />
 			))}
+			<Feature title="Brand icon">
+				Icons made by{' '}
+				<Link
+					color="teal.500"
+					href="https://www.flaticon.com/free-icon/car-repair_846300"
+					title="Kiranshastry"
+				>
+					Kiranshastry
+					<ExternalLinkIcon mx={1} />
+				</Link>{' '}
+				from{' '}
+				<Link
+					color="teal.500"
+					href="https://www.flaticon.com/"
+					title="Flaticon"
+				>
+					{' '}
+					www.flaticon.com
+				</Link>
+			</Feature>
 		</Stack>
 	);
 }

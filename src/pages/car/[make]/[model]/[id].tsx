@@ -1,14 +1,25 @@
+import { Box } from '@chakra-ui/core';
 import { GetServerSideProps } from 'next';
-import { CarModel } from '../../../../../api';
-import CarDetail, { CarDetailProps } from '../../../../components/CarDetail';
+import Head from 'next/head';
+import CarCard, { CarCardProps } from '../../../../components/CarCard';
+import { CarModel } from '../../../../interfaces/Car';
 import { openDB } from '../../../../openDB';
 
-export default function CarDetails({ car }: CarDetailProps) {
+export default function CarDetails({ car }: CarCardProps) {
 	if (!car) {
 		return <div>Sorry, car not found.</div>;
 	}
 
-	return <CarDetail car={car} />;
+	return (
+		<>
+			<Head>
+				<title>{car?.make + ' ' + car?.model}</title>
+			</Head>
+			<Box mb="auto">
+				<CarCard car={car} />
+			</Box>
+		</>
+	);
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
