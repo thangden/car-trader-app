@@ -1,17 +1,11 @@
 import { Avatar, HStack, Link } from '@chakra-ui/core';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
-import { UrlObject } from 'url';
 import { ParsedUrlQuery } from 'querystring';
 import { forwardRef } from 'react';
+import { getAsString } from '../common';
 
-export interface PaginationProps {
-	currentPage: number;
-	totalPages: number;
-	url: UrlObject;
-}
-
-export function Pagination({ currentPage, totalPages, url }: PaginationProps) {
+export function Pagination({ totalPages }: { totalPages: number }) {
 	const { query } = useRouter();
 	if (totalPages <= 1) {
 		return null;
@@ -22,7 +16,7 @@ export function Pagination({ currentPage, totalPages, url }: PaginationProps) {
 				.fill(null)
 				.map((_, i) => i + 1)
 				.map((page, index) => {
-					return page === currentPage ? (
+					return page === parseInt(getAsString(query.page) || '1') ? (
 						<Avatar
 							key={page}
 							name={page.toString()}
@@ -55,7 +49,7 @@ const PaginationItem = forwardRef<HTMLAnchorElement, PaginationItemProps>(
 		>
 			<Link
 				_hover={{ textDecoration: 'none' }}
-				borderRadius="50%"
+				borderRadius="full"
 				{...props}
 				ref={ref}
 			>

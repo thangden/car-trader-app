@@ -9,11 +9,11 @@ async function setupDB() {
 
 	await db.migrate({ force: 'last' });
 
-	const faqs = await db.all('SELECT * FROM FAQ ORDER BY createdDate DESC');
-	console.log('Total Faqs', faqs.length);
+	const faqs = await db.get('SELECT COUNT(*) as count FROM FAQ');
+	console.log('Total Faqs', faqs.count);
 
-	const cars = await db.all('SELECT * FROM Car');
-	console.log('Total Cars', cars.length);
+	const cars = await db.get('SELECT COUNT(*) as count FROM Car');
+	console.log('Total Cars', cars.count);
 }
 
 setupDB();

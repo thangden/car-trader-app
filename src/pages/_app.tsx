@@ -1,13 +1,21 @@
 import theme from '../theme';
 // import App from "next/app";
 import type { AppProps /*, AppContext */ } from 'next/app';
-import { Box, ChakraProvider, Flex } from '@chakra-ui/core';
+import {
+	Box,
+	ChakraProvider,
+	Container,
+	Flex,
+	Link,
+	Text,
+} from '@chakra-ui/core';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { Router } from 'next/dist/client/router';
 import { SWRConfig } from 'swr';
-import API from '../../api';
 import { Nav } from '../components/Nav';
+import Head from 'next/head';
+import Axios from 'axios';
 
 NProgress.configure({ showSpinner: false });
 
@@ -23,20 +31,70 @@ Router.events.on('routeChangeError', () => {
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
-		<ChakraProvider resetCSS theme={theme}>
-			<SWRConfig
-				value={{ fetcher: (url: string) => API(url).then((r) => r.data) }}
-			>
-				<Box backgroundColor="gray.100" minH="100vh">
-					<Flex backgroundColor="white" w="full">
+		<>
+			<Head>
+				<title>Car Trader - Perfect place to find your next car</title>
+				<link rel="icon" href="/favicons/favicon.ico" />
+				<link
+					rel="apple-touch-icon"
+					sizes="180x180"
+					href="/favicons/apple-touch-icon.png"
+				/>
+				<link
+					rel="icon"
+					type="image/png"
+					sizes="32x32"
+					href="/favicons/favicon-32x32.png"
+				/>
+				<link
+					rel="icon"
+					type="image/png"
+					sizes="16x16"
+					href="/favicons/favicon-16x16.png"
+				/>
+				<link rel="manifest" href="/favicons/site.webmanifest" />
+				<link
+					rel="mask-icon"
+					href="/favicons/safari-pinned-tab.svg"
+					color="#333333"
+				/>
+				<meta name="msapplication-TileColor" content="#ffffff" />
+				<meta name="theme-color" content="#ffffff" />
+			</Head>
+			<ChakraProvider resetCSS theme={theme}>
+				<SWRConfig
+					value={{ fetcher: (url: string) => Axios(url).then((r) => r.data) }}
+				>
+					<Box backgroundColor="gray.100" minH="100vh">
 						<Nav />
-					</Flex>
-					<Flex mx="auto" direction="column" maxW="1250px" px={8} py={16}>
-						<Component {...pageProps} />
-					</Flex>
-				</Box>
-			</SWRConfig>
-		</ChakraProvider>
+						<Container
+							maxW="xl"
+							centerContent
+							minH="calc(100vh - 70px)"
+							px={8}
+							py={16}
+						>
+							<Component {...pageProps} />
+							<Box as="footer" mt="auto" pt={8} textAlign="center">
+								<Text fontSize="sm">
+									<Text as="span">Proudly made in 🇻🇳 </Text>
+									<Text as="span">
+										by{' '}
+										<Link
+											href="https://github.com/thangden"
+											isExternal
+											fontWeight="semibold"
+										>
+											thangden
+										</Link>
+									</Text>
+								</Text>
+							</Box>
+						</Container>
+					</Box>
+				</SWRConfig>
+			</ChakraProvider>
+		</>
 	);
 }
 

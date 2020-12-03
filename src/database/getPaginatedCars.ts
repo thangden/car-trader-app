@@ -1,6 +1,6 @@
 import { ParsedUrlQuery } from 'querystring';
-import { CarModel } from '../../api';
 import { getAsString } from '../common';
+import { CarModel } from '../interfaces/Car';
 import { openDB } from '../openDB';
 
 const mainQuery = `
@@ -15,7 +15,7 @@ export async function getPaginatedCars(query: ParsedUrlQuery) {
 	const db = await openDB();
 
 	const page = getValueNumber(query.page) || 1;
-	const rowPerPage = getValueNumber(query.rowPerPage) || 4;
+	const rowPerPage = getValueNumber(query.rowPerPage) || 5;
 	const offset = (page - 1) * rowPerPage;
 
 	const dbParams = {

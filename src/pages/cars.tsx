@@ -5,14 +5,15 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { stringify } from 'querystring';
 import deepEqual from 'fast-deep-equal';
-import Search from '.';
 import { getAsString } from '../common';
 import { getMakes, Make } from '../database/getMakes';
 import { getModels, Model } from '../database/getModels';
 import { getPaginatedCars } from '../database/getPaginatedCars';
 import { Pagination } from '../components/Pagination';
-import CarDetail from '../components/CarDetail';
-import { CarModel } from '../../api';
+import CarCard from '../components/CarCard';
+import Head from 'next/head';
+import Search from '../components/Search';
+import { CarModel } from '../interfaces/Car';
 
 export interface CarsProps {
 	makes: Make[];
@@ -36,35 +37,34 @@ export default function Cars({ makes, models, cars, totalPages }: CarsProps) {
 	);
 
 	return (
-		<Grid
-			h="100%"
-			templateRows="repeat(1, 1fr)"
-			templateColumns="repeat(4, 1fr)"
-			gap={4}
-		>
-			<GridItem colSpan={[4, null, 1]}>
-				<Search singleColumns makes={makes} models={models} />
-			</GridItem>
-			<GridItem colSpan={[4, null, 3]}>
-				<Stack spacing={4}>
-					{isValidating &&
-						Array(3)
-							.fill(null)
-							.map((_, i) => <CarDetail key={i} loading />)}
-					<Pagination
-						currentPage={parseInt(getAsString(query.page) || '1')}
-						totalPages={data && data.totalPages}
-						url={{ pathname: '/cars' }}
-					/>
-					{data && data.cars.map((car) => <CarDetail key={car.id} car={car} />)}
-					<Pagination
-						currentPage={parseInt(getAsString(query.page) || '1')}
-						totalPages={data && data.totalPages}
-						url={{ pathname: '/cars' }}
-					/>
-				</Stack>
-			</GridItem>
-		</Grid>
+		<>
+			<Head>
+				<title>List of all available cars - Car Trader</title>
+			</Head>
+			<Grid
+				h="100%"
+				templateRows="repeat(1, 1fr)"
+				templateColumns="repeat(4, 1fr)"
+				gap={4}
+			>
+				<GridItem colSpan={[4, null, 1]}>
+					<Search singleColumns makes={makes} models={models} />
+				</GridItem>
+				<GridItem colSpan={[4, null, 3]}>
+					<Stack spacing={4}>
+						{isValidating &&
+							Array(3)
+								.fill(null)
+								.map((_, i) => <CarCard key={i} loading />)}
+						<Pagination totalPages={data?.totalPages} />
+						{(data?.cars || []).map((car) => (
+							<CarCard key={car.id} car={car} />
+						))}
+						<Pagination totalPages={data?.totalPages} />
+					</Stack>
+				</GridItem>
+			</Grid>
+		</>
 	);
 }
 
